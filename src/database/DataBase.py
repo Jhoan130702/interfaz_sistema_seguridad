@@ -1,5 +1,10 @@
 import flet as ft
-import mysql.connector 
+import mysql.connector
+import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
 
 class ConexionBaseDatos:
     def __init__(self):
@@ -10,11 +15,11 @@ class ConexionBaseDatos:
     def conectar(self):
             
         self.conexion = mysql.connector.connect(
-        host="localhost",
-        user="root_remoto",
-        password="Jhoan",
-        database="sistema_seguridad",
-        port='3306'
+        host=os.getenv('DB_HOST', 'localhost'),
+        user=os.getenv('DB_USER', 'root'),
+        password=os.getenv('DB_PASSWORD', ''),
+        database=os.getenv('DB_NAME', 'sistema_seguridad'),
+        port=os.getenv('DB_PORT', '3306')
         )
         self.cursor = self.conexion.cursor()
 

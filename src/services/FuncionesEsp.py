@@ -4,8 +4,10 @@ from datetime import datetime
 import json
 import flet as ft
 import threading
-import DataBase
-import NotificacionesBarra
+from src.database import DataBase
+from src.services import NotificacionesBarra
+from config.config import ESP8266_URL
+
 notificacion =  NotificacionesBarra.Notificador()
 hora_actual = datetime.now().strftime("%H:%M")
 ###################################################################################################### ACTIVACION DEL PIR tercer hilo
@@ -13,7 +15,7 @@ class Pir(threading.Thread):
     def __init__(self):
         super().__init__()
         self.daemon = True 
-        self.url = "http://192.168.4.1/"
+        self.url = ESP8266_URL
     
     def run(self):
         while True:
@@ -73,7 +75,7 @@ class MiHilo2(threading.Thread):
         self.db = DataBase.ConexionBaseDatos()
 
         # Consulta de PIR
-        url_d = "http://192.168.4.1/handlepir"
+        url_d = f"{ESP8266_URL}handlepir"
         params_d = {'box_d': 'valor_de_box_d'}
 
         try:
@@ -97,7 +99,7 @@ class MiHilo2(threading.Thread):
             print("Error en la solicitud de box_d")
 
         # Consulta de lector de huellas
-        url_c = "http://192.168.4.1/handleRequest"
+        url_c = f"{ESP8266_URL}handleRequest"
         params_c = {'box_c': 'valor_de_box_c'}
 
         try:
@@ -174,7 +176,7 @@ class MiHilo(threading.Thread):
         self.datos = temporal
         
         # Conexión y consulta al ESP
-        url = "http://192.168.4.1/"
+        url = ESP8266_URL
         command = "Consultar"
 
         data = {"command": command}
@@ -200,7 +202,7 @@ class MiHilo(threading.Thread):
             self.db.ejecutar_actualizacion("Delete from huella where id > 0;")
             print("No había datos en el esp")
         elif self.mensaje and not self.datos:
-            url = "http://192.168.4.1/"
+            url = ESP8266_URL
             command = "Eliminar"
 
             for box_a in self.mensaje:
@@ -225,7 +227,7 @@ class MiHilo(threading.Thread):
                     eliminar_esp.append(huella)
 
             if eliminar_esp:
-                url = "http://192.168.4.1/"
+                url = ESP8266_URL
                 command = "Eliminar"
 
                 for huella in eliminar_esp:
@@ -265,7 +267,7 @@ class MiHilo(threading.Thread):
 
         print(matriz_volteada)
 
-        url = "http://192.168.4.1/"
+        url = ESP8266_URL
         command = "sql"
 
         array_data = json.dumps(matriz_volteada)
@@ -327,7 +329,7 @@ class RegistroHuellas:
                     id_var = None
                     huellas = []
                     id_response = []
-                    url = "http://192.168.4.1/"
+                    url = ESP8266_URL
                     command = "Registrar"
                     bottom_sheet = ft.BottomSheet(
                         content=ft.Container(
@@ -653,7 +655,7 @@ class RegistroHuellas:
             self.page.update()
 
     def eliminar_huellas(self, ids):
-        url = "http://192.168.4.1/"
+        url = ESP8266_URL
         command = "Eliminar"
         for box_a in ids:
             if box_a:
@@ -673,7 +675,7 @@ class RegistroHuellas:
 class NotificacionesESP():
     def acceso():
         print("acceso")
-        url = "http://192.168.4.1/"
+        url = ESP8266_URL
         print(url)
         command = "notificacion"
         print(command)
@@ -689,7 +691,7 @@ class NotificacionesESP():
             
     def AbrirPuerta():
         print("Abrir Puerta")
-        url = "http://192.168.4.1/"
+        url = ESP8266_URL
         print(url)
         command = "puerta"
         print(command)
@@ -705,7 +707,7 @@ class NotificacionesESP():
     
     def ProblemaInicio():
         print("Problema de Inicio")
-        url = "http://192.168.4.1/"
+        url = ESP8266_URL
         print(url)
         command = "notificacioninicio"
         print(command)

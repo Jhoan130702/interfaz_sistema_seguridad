@@ -1,8 +1,8 @@
 import flet as ft
-import Aplicacion
-import DataBase
+from src.ui import Aplicacion
+from src.database import DataBase
 from plyer import notification
-import FuncionesEsp
+from src.services import FuncionesEsp
 
 def mostrar_dialogo(page, mensaje, titulo):
     dialogo = ft.AlertDialog(

@@ -1,11 +1,11 @@
 import flet as ft
 from datetime import datetime, timedelta
-import DataBase
+from src.database import DataBase
 import shutil
 import os
 import threading
 import time
-from Reportes_PDF import ReportePDF  # Asegúrate de importar tu clase ReportePDF
+from src.services.Reportes_PDF import ReportePDF  # Asegúrate de importar tu clase ReportePDF
 
 class UserProfile:
     def __init__(self, page: ft.Page, cedula: int):
@@ -78,7 +78,7 @@ class UserProfile:
             (self.id,)
         )
         if not foto:
-            return f"Perfiles/150.png"  # URL por defecto si no hay foto
+            return f"assets/profiles/150.png"  # URL por defecto si no hay foto
         else:
             return foto[0][0]
 
@@ -193,14 +193,14 @@ class UserProfile:
             foto_anterior = self.get_profile_picture_url()
 
             # Registrar la nueva foto en la base de datos primero
-            ruta_absoluta = os.path.abspath(f"Perfiles/{self.cedula}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg")
+            ruta_absoluta = os.path.abspath(f"assets/profiles/{self.cedula}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg")
             if self.guardar_en_base_datos(ruta_absoluta):
                 # Eliminar la foto anterior si no es la foto por defecto
 
                 # Ahora guardar la nueva foto en el sistema
                 self.guardar_foto(new_url, ruta_absoluta)
                 
-                if foto_anterior != f"Perfiles/150.png":
+                if foto_anterior != f"assets/profiles/150.png":
                     self.eliminar_foto(foto_anterior)
 
                 # Volver a cargar los datos del usuario para refrescar la vista

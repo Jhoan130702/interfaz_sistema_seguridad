@@ -1,9 +1,9 @@
 import flet as ft
-import DataBase
-import FuncionesEsp
-import Login
-import NotificacionesBarra
-from Perfil import UserProfile
+from src.database import DataBase
+from src.services import FuncionesEsp
+from src.ui import Login
+from src.services import NotificacionesBarra
+from src.ui.Perfil import UserProfile
 
 conexion = DataBase.ConexionBaseDatos()
 edit_fields = ft.Column(visible=False)  # Campos de edición inicialmente ocultos

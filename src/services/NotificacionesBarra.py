@@ -1,7 +1,7 @@
 import threading
 import time
 from plyer import notification
-import DataBase  # Cambia esto según tu base de datos
+from src.database import DataBase  # Cambia esto según tu base de datos
 
 class Notificador(threading.Thread):
     def __init__(self):
@@ -10,7 +10,7 @@ class Notificador(threading.Thread):
         self.ejecutando = True  # Controla el bucle del hilo
 
     def mostrar_notificacion(self, mensaje):
-        icon_path = r"Icono_notificacion.ico"
+        icon_path = r"assets\icons\Icono_notificacion.ico"
         
         notification.notify(
             title="Nueva Notificación",
