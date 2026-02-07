@@ -139,3 +139,5 @@ flet/bin/
 # User specific
 myenv/
 credentials.json
+.gemini/
+.antigravity/
